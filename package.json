@@ -1,0 +1,39 @@
+{
+  "name": "@tyx1703/watermark",
+  "version": "1.0.0",
+  "main": "dist/watermark.js",
+  "license": "MIT",
+  "scripts": {
+    "build-pure": "webpack --config webpack.prod.js",
+    "build-polyfill": "webpack --config webpack.prod-polyfill.js",
+    "lint": "eslint src",
+    "test": "jest",
+    "pre-build": "yarn lint && yarn test",
+    "build": "yarn build-pure && yarn build-polyfill"
+  },
+  "browserslist": [
+    "last 5 version",
+    "IE >= 9"
+  ],
+  "devDependencies": {
+    "@babel/core": "^7.2.2",
+    "@babel/preset-env": "^7.2.3",
+    "autoprefixer": "^9.4.6",
+    "babel-core": "^7.0.0-bridge.0",
+    "babel-jest": "^23.6.0",
+    "babel-loader": "^8.0.4",
+    "css-loader": "^2.1.0",
+    "eslint": "^5.11.1",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.14.0",
+    "html-webpack-plugin": "^3.2.0",
+    "jest": "^23.6.0",
+    "jest-canvas-mock": "^1.1.0",
+    "uglifyjs-webpack-plugin": "^2.1.1",
+    "webpack": "^4.28.2",
+    "webpack-cli": "^3.1.2"
+  },
+  "dependencies": {
+    "@babel/polyfill": "^7.2.5"
+  }
+}
