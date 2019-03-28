@@ -3,69 +3,79 @@ import U from './utils';
 class Watermark {
   constructor(el, options) {
     if (options === undefined) {
-      if (U.isNode(el)) {
-        this.set();
+      if (U.isNode(el) || U.isString(el)) {
         this.mount(el);
+        this.set();
       } else {
+        this.$el = null;
         this.set(el);
       }
     } else {
-      this.set(options);
       this.mount(el);
+      this.set(options);
     }
-
-    /* this.el = document.querySelector(el); // 节点
-    this.textArray = textArray; // 水印数组
-    this.font = font; // 字体样式 eg. '26px serif'; 指定字体之后后面的fontsize fontfamily失效
-    this.fontsize = fontsize; // 字号
-    this.fontFamily = fontFamily; // 字体
-    this.width = width; // 画布宽度， 不支持定制
-    this.height = height; // 画布高度， 不支持定制
-    this.padding = padding; // 水印边距
-    this.lineHeight = lineHeight; // 水印行高
-    this.rotate = rotate; // 旋转角度 0 - 90' ，弧度表示
-    this.fontScale = fontScale; // 半角全角字符宽度比值
-    this.color = color; */
   }
 
   /**
-   * [calcute ctx -> draw canvs -> render]
+   * [calculate ctx -> draw canvs -> render]
    * @return {[type]} [description]
    */
   draw() {
-    this.init();
-    this.drawCanvas();
-    this.render();
-    this.observe();
+    if (U.isNode(this.$el) && !U.isNull(this.options)) {
+      this.init();
+      this.drawCanvas();
+      this.render();
+      this.observe();
+    }
+    return this;
   }
 
-  mount(el) {
+  /**
+   * whitch element will display watermark
+   * @param {String | HTMLElement} el
+   * @return this
+   */
+  mount(el = null) {
     if (typeof el === 'string') {
       this.$el = document.querySelector(el);
     } else {
       this.$el = el;
     }
-    this.draw();
     return this;
   }
 
+  /**
+   * unmount element
+   */
+  unMount() {
+    this.$el = null;
+    return this;
+  }
+
+  /**
+   * set watermark style
+   * @param {Object} options
+   * @return this
+   */
   set(options = {}) {
     // eslint-disable-next-line no-param-reassign
-    options = Object.assign(options, {
+    options = Object.assign({
       textArray: ['example'],
       fontSize: 26,
       fontFamily: 'serif',
       padding: 25,
       lineHeight: -1,
-      rotate: Math.PI / 6,
+      rotate: 0,
       fontScale: 0.5,
       color: '#eeeeee',
-    });
+    }, options);
     this.options = options;
     return this;
   }
 
-
+  /**
+   * initialize watermark style
+   */
   init() {
     this.initFont(); // 必须先初始化字体
     this.initSize(); // 然后计算画布大小
@@ -75,7 +85,7 @@ class Watermark {
    * 初始化字体，计算行高
    */
   initFont() {
-    const options = this.options;
+    const { options } = this;
     this.options.font = `${options.fontSize}px ${options.fontFamily}`;
 
     if (options.lineHeight === -1) {
@@ -87,7 +97,7 @@ class Watermark {
    * 计算画布大小
    */
   initSize() {
-    const options = this.options;
+    const { options } = this;
 
     // max length of text array
     const maxLength = options.textArray.reduce((max, current) => {
@@ -116,10 +126,9 @@ class Watermark {
     canvas.height = this.ctxHeight;
     if (canvas.getContext) {
       const ctx = canvas.getContext('2d');
-      const options = this.options;
-
-      ctx.translate(...this.origin(this.rotate));
-      ctx.rotate(this.rotate);
+      const { options } = this;
+      ctx.translate(...this.origin(options.rotate));
+      ctx.rotate(options.rotate);
       ctx.textAlign = 'start';
       ctx.textBaseline = 'top';
       ctx.font = options.font;
@@ -158,9 +167,8 @@ class Watermark {
    */
   origin(rotate) {
     let origin = [0, 0]; // 第四象限，定义左上角为坐标原点
-
     if (rotate < 0 && rotate > -Math.PI / 2) { // 第一象限，定义左下角为坐标原点
-      origin = [0, this.height];
+      origin = [0, this.ctxHeight];
     }
     return origin;
   }
@@ -169,9 +177,12 @@ class Watermark {
    * 绘制。添加背景到指定节点上
    */
   render() {
-    // const dataUrl = this.dataUrlVal || this.dataUrl();
     const dataUrl = this.canvas.toDataURL();
-    this.$el.style.background = `url(${dataUrl})`;
+    if (dataUrl) {
+      this.$el.style.background = `url(${dataUrl})`;
+    } else {
+      this.$el.style.background = '';
+    }
     this.background = this.$el.style.background;
   }
 
@@ -182,11 +193,12 @@ class Watermark {
   observe() {
     if (this.observer) {
       // remove observer
+      this.observer.disconnect();
     }
 
-    const observer = new MutationObserver((mutations, observer) => {
+    const observer = new MutationObserver((mutations) => {
       mutations.forEach((mutation) => {
-        const target = mutation.target;
+        const { target } = mutation;
         // 检测背景是否与设置的水印相同
         if (target.style.background !== this.background) {
           target.style.background = this.background;
@@ -200,6 +212,21 @@ class Watermark {
       attributeFilter: ['style'],
     });
     this.observer = observer;
+  }
+
+  /**
+   * clear watermark
+   */
+  destory() {
+    if (U.isNode(this.$el)) {
+      this.$el.style.background = '';
+    }
+    if (this.observer) {
+      this.observer.disconnect();
+    }
+    this.observer = null;
+    this.unMount();
+    this.set();
   }
 }
 
