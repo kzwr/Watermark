@@ -3,13 +3,86 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Watermark Demo</title>
+	<link rel="stylesheet" href="style.css">
 </head>
 <body>
-	
-
-	<script src="../dist/Watermark.js"></script>
+	<div class="container">
+		<div class="management">
+			<button id="create">Create</button>
+			<button id="mount">Mount</button>
+			<button id="set">Set</button>
+			<button id="destory">Destory</button>
+		</div>
+	</div>
+	<script src="./dist/Watermark.min.js"></script>
 	<script>
-		const watermark = new Watermark('body');
+		var create = document.querySelector('#create');
+		var mount = document.querySelector('#mount');
+		var set = document.querySelector('#set');
+		var destory = document.querySelector('#destory');
+		
+		var watermark = null;
+		create.addEventListener('click', function() {
+			if(watermark) {
+				watermark.destory();
+			}
+			watermark = new Watermark();
+		});
+		
+		mount.addEventListener('click', function() {
+			if(watermark)
+				watermark.mount('body').draw();
+		});
+
+		set.addEventListener('click', function() {
+			if(watermark)
+				watermark.set({
+					color: randomColor(),
+					textArray: randomTextArray(),
+					rotate: randomRotate(),
+				}).draw();
+		});
+		
+		destory.addEventListener('click', function() {
+			if(watermark)
+				watermark.destory();
+			watermark = null;
+		});
+
+		function randomInt(min, max) {
+			min = Math.floor(min);
+			max = Math.floor(max);
+			return Math.floor(Math.random() * (max - min) + min);
+		}
+
+		function randomColor() {
+			var colorMap = ['#282c34', 'red', 'rgb(230, 230, 230)'];
+			h = randomInt(0, colorMap.length);
+			return colorMap[h];
+		}
+
+		function randomTextArray() {
+			var textMap = [
+				'Hello, world!',
+				'世界你好！',
+				"i can eat glass and it doesn't hurt me",
+				'a lazy fox jumps over a dog'
+			];
+			var textArray = [];
+
+			var h = randomInt(1, textMap.length);
+			for (var i = 0; i < h; i++) {
+				var tmp = randomInt(0, textMap.length -1);
+				textArray.push(textMap[tmp]);
+			}
+			return textArray;
+		}
+
+		function randomRotate() {
+			var h = randomInt(3, 10);
+			var symbol = randomInt(0, 2) ? 1 : -1;
+			return (symbol * Math.PI / h);
+		}
 	</script>
 </body>
 </html>
