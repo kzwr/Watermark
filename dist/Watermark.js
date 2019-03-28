@@ -102,10 +102,47 @@ return /******/ (function(modules) { // webpackBootstrap
 __webpack_require__.r(__webpack_exports__);
 
 // CONCATENATED MODULE: ./src/utils.js
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+// eslint-disable-next-line arrow-body-style
+
+/**
+ * check if is HTML element dom node
+ * @return {Boolean}
+ */
 var isNode = function isNode(el) {
-  if (typeof el === 'string') return true;
-  return false;
+  return typeof HTMLElement === 'function' ? el instanceof HTMLElement : el && _typeof(el) === 'object' && el.nodeType === 1 && typeof el.nodeName === 'string';
 };
+/**
+ * check if is string
+ * @param {*} el
+ * @return {Boolean}
+ */
+
+
+var isString = function isString(el) {
+  return typeof el === 'string';
+};
+/**
+ * check if is null
+ * @param {*} object
+ * @return {Boolean}
+ */
+
+
+var isNull = function isNull(object) {
+  return object === null;
+};
+/**
+ * get string length by font scale
+ * @param {String} string
+ * @param {*} scale font scale
+ * @return {Number}
+ *
+ * @example length('Hello, 世界'， 0.5)
+ * // 5.5
+ */
+
 
 var utils_length = function length(string, scale) {
   var l = 0;
@@ -121,6 +158,8 @@ var utils_length = function length(string, scale) {
 
 /* harmony default export */ var utils = ({
   isNode: isNode,
+  isString: isString,
+  isNull: isNull,
   length: utils_length
 });
 // CONCATENATED MODULE: ./src/Watermark.js
@@ -147,32 +186,20 @@ function () {
     _classCallCheck(this, Watermark);
 
     if (options === undefined) {
-      if (utils.isNode(el)) {
-        this.set();
+      if (utils.isNode(el) || utils.isString(el)) {
         this.mount(el);
+        this.set();
       } else {
+        this.$el = null;
         this.set(el);
       }
     } else {
-      this.set(options);
       this.mount(el);
+      this.set(options);
     }
-    /* this.el = document.querySelector(el); // 节点
-    this.textArray = textArray; // 水印数组
-    this.font = font; // 字体样式 eg. '26px serif'; 指定字体之后后面的fontsize fontfamily失效
-    this.fontsize = fontsize; // 字号
-    this.fontFamily = fontFamily; // 字体
-    this.width = width; // 画布宽度， 不支持定制
-    this.height = height; // 画布高度， 不支持定制
-    this.padding = padding; // 水印边距
-    this.lineHeight = lineHeight; // 水印行高
-    this.rotate = rotate; // 旋转角度 0 - 90' ，弧度表示
-    this.fontScale = fontScale; // 半角全角字符宽度比值
-    this.color = color; */
-
   }
   /**
-   * [calcute ctx -> draw canvs -> render]
+   * [calculate ctx -> draw canvs -> render]
    * @return {[type]} [description]
    */
 
@@ -180,41 +207,72 @@ function () {
   _createClass(Watermark, [{
     key: "draw",
     value: function draw() {
-      this.init();
-      this.drawCanvas();
-      this.render();
-      this.observe();
+      if (utils.isNode(this.$el) && !utils.isNull(this.options)) {
+        this.init();
+        this.drawCanvas();
+        this.render();
+        this.observe();
+      }
+
+      return this;
     }
+    /**
+     * whitch element will display watermark
+     * @param {String | HTMLElement} el
+     * @return this
+     */
+
   }, {
     key: "mount",
-    value: function mount(el) {
+    value: function mount() {
+      var el = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+
       if (typeof el === 'string') {
         this.$el = document.querySelector(el);
       } else {
         this.$el = el;
       }
 
-      this.draw();
       return this;
     }
+    /**
+     * unmount element
+     */
+
+  }, {
+    key: "unMount",
+    value: function unMount() {
+      this.$el = null;
+      return this;
+    }
+    /**
+     * set watermark style
+     * @param {Object} options
+     * @return this
+     */
+
   }, {
     key: "set",
     value: function set() {
       var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
       // eslint-disable-next-line no-param-reassign
-      options = Object.assign(options, {
+      options = Object.assign({
         textArray: ['example'],
         fontSize: 26,
         fontFamily: 'serif',
         padding: 25,
         lineHeight: -1,
-        rotate: Math.PI / 6,
+        rotate: 0,
         fontScale: 0.5,
         color: '#eeeeee'
-      });
+      }, options);
       this.options = options;
       return this;
     }
+    /**
+     * initialize watermark style
+     */
+
   }, {
     key: "init",
     value: function init() {
@@ -272,8 +330,8 @@ function () {
       if (canvas.getContext) {
         var ctx = canvas.getContext('2d');
         var options = this.options;
-        ctx.translate.apply(ctx, _toConsumableArray(this.origin(this.rotate)));
-        ctx.rotate(this.rotate);
+        ctx.translate.apply(ctx, _toConsumableArray(this.origin(options.rotate)));
+        ctx.rotate(options.rotate);
         ctx.textAlign = 'start';
         ctx.textBaseline = 'top';
         ctx.font = options.font;
@@ -319,7 +377,7 @@ function () {
 
       if (rotate < 0 && rotate > -Math.PI / 2) {
         // 第一象限，定义左下角为坐标原点
-        origin = [0, this.height];
+        origin = [0, this.ctxHeight];
       }
 
       return origin;
@@ -331,9 +389,14 @@ function () {
   }, {
     key: "render",
     value: function render() {
-      // const dataUrl = this.dataUrlVal || this.dataUrl();
       var dataUrl = this.canvas.toDataURL();
-      this.$el.style.background = "url(".concat(dataUrl, ")");
+
+      if (dataUrl) {
+        this.$el.style.background = "url(".concat(dataUrl, ")");
+      } else {
+        this.$el.style.background = '';
+      }
+
       this.background = this.$el.style.background;
     }
     /**
@@ -345,10 +408,12 @@ function () {
     value: function observe() {
       var _this = this;
 
-      if (this.observer) {// remove observer
+      if (this.observer) {
+        // remove observer
+        this.observer.disconnect();
       }
 
-      var observer = new MutationObserver(function (mutations, observer) {
+      var observer = new MutationObserver(function (mutations) {
         mutations.forEach(function (mutation) {
           var target = mutation.target; // 检测背景是否与设置的水印相同
 
@@ -363,6 +428,25 @@ function () {
         attributeFilter: ['style']
       });
       this.observer = observer;
+    }
+    /**
+     * clear watermark
+     */
+
+  }, {
+    key: "destory",
+    value: function destory() {
+      if (utils.isNode(this.$el)) {
+        this.$el.style.background = '';
+      }
+
+      if (this.observer) {
+        this.observer.disconnect();
+      }
+
+      this.observer = null;
+      this.unMount();
+      this.set();
     }
   }]);
 
