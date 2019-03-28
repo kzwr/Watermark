@@ -4,16 +4,16 @@
   "main": "dist/watermark.js",
   "license": "MIT",
   "scripts": {
-    "build-pure": "webpack --config webpack.prod.js",
-    "build-polyfill": "webpack --config webpack.prod-polyfill.js",
+    "start": "webpack --config webpack.dev.js --watch",
+    "build": "webpack --config webpack.prod.js",
     "lint": "eslint src",
     "test": "jest",
-    "pre-build": "yarn lint && yarn test",
-    "build": "yarn build-pure && yarn build-polyfill"
+    "pre-build": "yarn lint && yarn test"
   },
   "browserslist": [
-    "last 5 version",
-    "IE >= 9"
+    "> 1%",
+    "last 2 versions",
+    "not ie <= 8"
   ],
   "devDependencies": {
     "@babel/core": "^7.2.2",
@@ -34,6 +34,7 @@
     "webpack-cli": "^3.1.2"
   },
   "dependencies": {
-    "@babel/polyfill": "^7.2.5"
+    "@babel/polyfill": "^7.2.5",
+    "core-js": "3"
   }
 }

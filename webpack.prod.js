@@ -3,7 +3,7 @@ const path = require('path');
 
 module.exports = {
   entry: {
-    'Watermark': './src/Watermark.js',
+    Watermark: './src/Watermark.js',
     'Watermark.min': './src/Watermark.js',
   },
   output: {
@@ -22,10 +22,7 @@ module.exports = {
         exclude: /node_modules/,
         use: {
           loader: 'babel-loader',
-          options: {
-            presets: ['@babel/preset-env'],
-          },
-        }
+        },
       },
     ],
   },

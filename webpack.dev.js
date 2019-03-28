@@ -1,46 +1,28 @@
 const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const webpack = require('webpack');
 
 module.exports = {
-  mode: 'development',
-  entry: './src/example.js',
+  entry: {
+    Watermark: './src/Watermark.js',
+    'Watermark.min': './src/Watermark.js',
+  },
   output: {
-    path: path.resolve(__dirname, 'docs'),
-    filename: 'index.js',
+    path: path.resolve(__dirname, 'dist'),
+    filename: '[name].js',
+    library: 'Watermark',
+    libraryExport: 'default',
+    libraryTarget: 'umd',
   },
-  devtool: 'inline-source-map',
-  devServer: {
-    contentBase: './docs',
-    hot: true,
-  },
+  devtool: 'source-map',
+  mode: 'development',
   module: {
     rules: [
       {
         test: /\.js$/,
         exclude: /node_modules/,
-        loader: 'babel-loader',
-      },
-      {
-        test: /\.scss/,
-        loader: ['style-loader', 'css-loader', 'postcss-loader', 'sass-loader'],
+        use: {
+          loader: 'babel-loader',
+        },
       },
     ],
-  },
-  plugins: [
-    new HtmlWebpackPlugin({
-      template: './public/index.html',
-    }),
-    new MiniCssExtractPlugin({
-      filename: 'css/[contenthash:8].css',
-    }),
-    new webpack.HotModuleReplacementPlugin(),
-  ],
-  resolve: {
-    alias: {
-      '~': path.resolve(__dirname, 'node_modules'),
-      '@': path.resolve(__dirname, 'src'),
-    },
   },
 };
