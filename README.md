@@ -26,7 +26,7 @@ yarn add tyx1703@watermark
 
 ## API
 
-### constructor([el, [options]])
+### constructor([el][, options])
 - *Arguments:*
     - `el {String | HTMLElement}[''] selector or html element`
     - `options {Object}[{...}] options for watermark`
@@ -40,7 +40,7 @@ yarn add tyx1703@watermark
       - `color {String}['#eeeeee'] text color`
 - *Example:*
     - ```javascript
-      new Watermark()
+      new Watermark();
       ```
     - ``` javascript
       new Watermark('body', {
@@ -66,7 +66,7 @@ yarn add tyx1703@watermark
         color: '#cccccc'
       }); // create a instance of Watermark
       watermark.mount('body');  // mount to document.body
-      // watermark.draw();  // dont fotget to use draw to display on mounted element
+      // watermark.draw();  // dont fotget to use draw() to display watermark on mounted element
       ```
 ### set(options)
 
@@ -87,7 +87,7 @@ yarn add tyx1703@watermark
         watermark.set({
           // your new options
         });
-        // watermark.draw();  must use draw to display
+        // watermark.draw();  must use draw() to display
       ```
 
 ### draw()
@@ -128,22 +128,4 @@ If you are interested in this project, welcome to fork and pull request.
 
 MIT License
 
-Copyright (c) 2018-present, iamkun
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+Copyright (c) 2018-present, tyx1703
