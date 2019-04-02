@@ -1,6 +1,6 @@
 # Introduction
 
-Watermark is a simple and quick library to draw watermark in where you want to.
+Watermark is a simple and quick library to draw watermark in HTML element.
 
 ```javascript
 new Watermark().set({
