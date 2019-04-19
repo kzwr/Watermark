@@ -1,7 +1,7 @@
 {
   "name": "@tyx1703/watermark",
-  "version": "1.0.0",
-  "description": "Watermark is a simple and quick library to draw watermark in HTML element.",
+  "version": "1.0.2",
+  "description": "Watermark is a simple and quick library to draw watermark on HTML element.",
   "main": "dist/Watermark.min.js",
   "license": "MIT",
   "scripts": {
@@ -21,7 +21,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git@github.com:YanxinTang/Watermark.git"
+    "url": "https://github.com/YanxinTang/Watermark.git"
   },
   "author": "tyx1703",
   "devDependencies": {

@@ -1,6 +1,6 @@
 # Introduction
 
-Watermark is a simple and quick library to draw watermark in HTML element.
+Watermark is a simple and quick library to draw watermark on HTML element.
 
 ```javascript
 new Watermark().set({
@@ -21,23 +21,25 @@ new Watermark('body', {
 ## Installatin
 
 ```console
-yarn add tyx1703@watermark
+yarn add @tyx1703/watermark
 ```
 
 ## API
 
 ### constructor([el][, options])
 - *Arguments:*
-    - `el {String | HTMLElement}[''] selector or html element`
-    - `options {Object}[{...}] options for watermark`
-      - `textArray {Array}[['example']] text list to display`
-      - `fontSize {Number}[26] font size`
-      - `fontFamily {String}['serif'] font family`
-      - `padding {Number}[25] watermark wrapper padding with text`
-      - `lineHeight {Number}[-1] text line height`
-      - `rotate {Number}[0] the angle of rotate, must in range of (-PI/2, PI/2)`
-      - `fontScale {Number}[0.5] Half-width and full-width fonts width ratio`
-      - `color {String}['#eeeeee'] text color`
+    ```
+      el {String | HTMLElement}['']       selector or html element
+      options {Object} [{...}]             options for watermark
+        textArray {Array} [['example']]   text list to display`
+        fontSize {Number} [26]            font size`
+        fontFamily {String} ['serif']     font family`
+        padding {Number} [25]             watermark wrapper padding with text`
+        lineHeight {Number} [-1]          text line height`
+        rotate {Number} [0]               the angle of rotate, must in range of (-PI/2, PI/2)
+        fontScale {Number} [0.5]          Half-width and full-width fonts width ratio
+        color {String} ['#eeeeee']        text color
+    ```
 - *Example:*
     - ```javascript
       new Watermark();
