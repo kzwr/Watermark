@@ -2,10 +2,20 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0;">
 	<title>Watermark Demo</title>
+	<link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
 	<link rel="stylesheet" href="style.css">
 </head>
 <body>
+	<nav class="nav">
+		<div class="logo-wrapper">
+			<span class="logo">
+				<span class="logo-head">W</span
+				><span class="logo-body">atermark</span>
+			</span>
+		</div>
+	</nav>
 	<div class="container">
 		<div class="management">
 			<button id="create">Create</button>
@@ -13,7 +23,22 @@
 			<button id="set">Set</button>
 			<button id="destory">Destory</button>
 		</div>
+		<section>
+			<div class="subtitle">
+				Tips
+			</div>
+			<ol class="tips">
+				<li><kbd>Create</kbd> can create an instance of Watermark</li>
+				<li><kbd>Mount</kbd> will mount instance which created in previous step to body</li>
+				<li><kbd>Set</kbd> will set instance configuration randomly</li>
+				<li><kbd>Destory</kbd> will destory the instance</li>
+				<li><kbd>Mount</kbd> and <kbd>Set</kbd> will call draw function automatically to simplify the operation in this demo</li>
+				<li>There was an instance of Watermark I created for you when the page loaded. You can destory it use <kbd>Destory</kbd> and re-create</li>
+				<li>More information is in <a href="https://github.com/YanxinTang/Watermark#introduction">Document</a></li>
+			</ol>
+		</section>
 	</div>
+	<script src="./polyfill.js"></script>
 	<script src="./dist/Watermark.min.js"></script>
 	<script>
 		var create = document.querySelector('#create');
@@ -21,10 +46,10 @@
 		var set = document.querySelector('#set');
 		var destory = document.querySelector('#destory');
 		
-		var watermark = null;
+		var watermark = new Watermark('body').draw();
 		create.addEventListener('click', function() {
 			if(watermark) {
-				watermark.destory();
+				watermark.destory();	
 			}
 			watermark = new Watermark();
 		});
@@ -40,6 +65,8 @@
 					color: randomColor(),
 					textArray: randomTextArray(),
 					rotate: randomRotate(),
+					opacity: 0.5,
+					fontFamily: 'Montserrat',
 				}).draw();
 		});
 		
@@ -56,7 +83,7 @@
 		}
 
 		function randomColor() {
-			var colorMap = ['#282c34', 'red', 'rgb(230, 230, 230)'];
+			var colorMap = ['#cde4ff', '#f6f8fa', '#a1c2fa', '#ea4335'];
 			h = randomInt(0, colorMap.length);
 			return colorMap[h];
 		}

@@ -47,29 +47,147 @@ table {
 	border-spacing: 0;
 }
 
+kbd {
+  padding: 2px 4px;
+  font-size: 90%;
+  color: #fff;
+  background-color: #333;
+  border-radius: 3px;
+  -webkit-box-shadow: inset 0 -1px 0 rgba(0,0,0,.25);
+  box-shadow: inset 0 -1px 0 rgba(0,0,0,.25);
+}
+a {
+  color: #4285f4;
+}
+.nav {
+  height: 60px;
+  background: #FFF;
+  box-shadow: 0 3px 3px #eee;
+  width: auto;
+  padding: 0 12px;
+}
+
+.logo-wrapper {
+  display: inline-block;
+}
+
+.logo {
+  line-height: 60px;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.logo-head {
+  color: #4285f4;
+  font-size: 26px;
+  display: inline-block;
+  animation: logo-head-animation 3s ease-in-out infinite normal forwards;
+}
+
+@keyframes logo-head-animation {
+  0% {
+    transform: rotateY(0);
+  }
+  60% {
+    transform: rotateY(0);
+  }
+  100% {
+    transform: rotateY(360deg);
+  }
+}
+
+.logo-body {
+  color: #5f6368;
+  font-size: 16px;
+}
 
 .container {
-  width: 100%;
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 0 12px;
 }
 
 .container .management {
-  width: 500px;
   height: 120px;
   line-height: 120px;
-  margin: 100px auto;
-}
-.management button {
-  width: 120px;
-  height: 60px;
+  margin: 32px auto;
   text-align: center;
-  font-size: 1.5rem;
+}
+
+.management button {
+  width: 80px;
+  height: 40px;
+  text-align: center;
+  font-size: 14px;
   color: #5f6368;
   background: #f2f2f2;
   border: 4px solid rgba(255,255,255,0.5);
   outline: none;
   border-radius: 3px;
   cursor: pointer;
-  line-height: 52px;
+  line-height: 24px;
+}
+
+.subtitle {
+  position: relative;
+  margin: 6px 12px;
+  height: 40px;
+  line-height: 40px;
+  text-indent: 6px;
+  color: #5f6368;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 16px;
+}
+
+.subtitle::before {
+  content: '';
+  display: block;
+  position: absolute;
+  height: 100%;
+  width: 6px;
+  left: -6px;
+  background: darkgrey;
+}
+
+.tips {
+  list-style: decimal;
+  font-family: 'Montserrat', sans-serif;
+  padding-left: 40px;
+}
+
+.tips li {
+  margin: 16px 0;
+  line-height: 24px;
+}
+
+@media (min-width: 768px) {
+  .logo-wrapper {
+    margin: 0 24px;
+  }
+  .container {
+    max-width: 700px;
+  }
+  .management button {
+    width: 120px;
+    height: 60px;
+    font-size: 24px;
+  }
+}
+
+@media (min-width: 992px) { 
+  .container {
+    max-width: 900px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .container {
+    max-width: 1000px;
+  }
+}
+
+.management button:hover {
+  opacity: 0.7;
+  border: 4px solid rgba(255,255,255,0.7);
 }
 
 .management #create {
