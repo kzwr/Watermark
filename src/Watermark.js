@@ -14,6 +14,8 @@ class Watermark {
       this.mount(el);
       this.set(options);
     }
+    this.canvas = null;
+    this.background = '';
   }
 
   /**
@@ -24,8 +26,13 @@ class Watermark {
     if (U.isNode(this.$el) && !U.isNull(this.options)) {
       this.init();
       this.drawCanvas();
-      this.render();
-      this.observe();
+
+      if (this.options.auto) {
+        this.render();
+      }
+      if (this.options.observe) {
+        this.observe();
+      }
     }
     return this;
   }
@@ -68,6 +75,8 @@ class Watermark {
       rotate: 0,
       fontScale: 0.5,
       color: '#eeeeee',
+      auto: true,
+      observe: true,
     }, options);
     this.options = options;
     return this;
@@ -184,6 +193,7 @@ class Watermark {
       this.$el.style.background = '';
     }
     this.background = this.$el.style.background;
+    return this;
   }
 
 
@@ -212,6 +222,7 @@ class Watermark {
       attributeFilter: ['style'],
     });
     this.observer = observer;
+    return this;
   }
 
   /**

@@ -15,7 +15,14 @@ const defaultOptions = {
   rotate: 0,
   fontScale: 0.5,
   color: '#eeeeee',
+  observe: true,
+  auto: true,
 };
+
+beforeEach(() => {
+  const body = document.body;
+  body.style.background = '';
+});
 
 describe('test constructor', () => {
   test('test both el and options undefined', () => {
@@ -92,15 +99,52 @@ describe('test draw', () => {
   test('draw default', () => {
     const watermark = new Watermark();
     watermark.draw();
-    expect(watermark.background).toBeUndefined();
-    expect(watermark.canvas).toBeUndefined();
+    expect(watermark.background).toBe('');
+    expect(watermark.canvas).toBeNull();
   });
 
   test('draw after mount', () => {
     const watermark = new Watermark();
     watermark.mount('body').draw();
+    expect(watermark.background).not.toBe('');
+    expect(watermark.canvas).toBeInstanceOf(HTMLCanvasElement);
+  });
+
+  test('test auto false', () => {
+    const watermark = new Watermark('body', {
+      auto: false,
+    });
+    watermark.draw();
     expect(watermark.background).toBe('');
-    expect(watermark.canvas).toBeInstanceOf(HTMLDivElement);
+  });
+  
+  test('test auto true', () => {
+    const watermark = new Watermark('body', {
+      auto: true,
+    });
+    watermark.draw();
+    expect(watermark.background).not.toBe('');
+  });
+});
+
+describe('test render', () => {
+  test('rende background by api',() => {
+    const watermark = new Watermark('body', {
+      auto: false,
+    });
+    watermark.draw().render();
+    expect(watermark.$el.style.background).not.toBe('');
+  });
+
+  test('rende background manully', () => {
+    const watermark = new Watermark('body', {
+      auto: false,
+    });
+    const canvas = watermark.draw().canvas;
+    const dataUrl = canvas.toDataURL();
+    const body = document.body;
+    body.style.background = `url(${dataUrl})`;
+    expect(body.style.background).not.toBe('');
   });
 });
 

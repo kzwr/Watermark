@@ -39,6 +39,8 @@ yarn add @tyx1703/watermark
         rotate {Number} [0]               the angle of rotate, must in range of (-PI/2, PI/2)
         fontScale {Number} [0.5]          Half-width and full-width fonts width ratio
         color {String} ['#eeeeee']        text color
+        auto {Boolean} [true]             whether add background to mounted element automatically
+        observe {Boolean} [true]          whether observe background of mounted element
     ```
 - *Example:*
     - ```javascript
@@ -54,6 +56,35 @@ yarn add @tyx1703/watermark
         fontSize: 16,
       });
       ```
+- *Note:*
+    If you set `options.auto = false`, `Watermark` will never add background to the mounted element, you must do it manually.
+    for example: 
+    ```javascript
+
+      /*
+       * use api
+       */
+      const watermark = new Watermark('body', { auto: false });
+      // ... do some action
+      watermark.draw();
+      // you can access canvas by watermark.canvas properity
+      watermark.render();   // must after draw call
+    ```
+    ```javascript
+
+      /*
+       * use pure js
+       */
+      const watermark = new Watermark('body', {
+        auto: false,
+      });
+      watermark.draw();
+      const canvas = watermark.draw().canvas;
+      const dataUrl = canvas.toDataURL();
+      const body = document.body;
+      body.style.background = `url(${dataUrl})`;
+    ```
+
 ### mount(el)
 
 - *Arguments:*
@@ -121,6 +152,25 @@ yarn add @tyx1703/watermark
     - ```javascript
       new Watermark().set().mount().destory();
       ```
+
+### render()
+- *Usage:*
+
+    - add background to mounted element
+
+- *Note:*
+    
+    - only used in situation that `options.auto` is setted to `false`
+
+### observer()
+  - *Usage:*
+
+    - add observer that can observe background of mounted element
+
+- *Note:*
+    
+    - only used in situation that `options.observe` is setted to `false`
+
 
 ## Contributors
 
