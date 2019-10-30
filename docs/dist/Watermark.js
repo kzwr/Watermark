@@ -197,6 +197,9 @@ function () {
       this.mount(el);
       this.set(options);
     }
+
+    this.canvas = null;
+    this.background = '';
   }
   /**
    * [calculate ctx -> draw canvs -> render]
@@ -210,8 +213,14 @@ function () {
       if (utils.isNode(this.$el) && !utils.isNull(this.options)) {
         this.init();
         this.drawCanvas();
-        this.render();
-        this.observe();
+
+        if (this.options.auto) {
+          this.render();
+        }
+
+        if (this.options.observe) {
+          this.observe();
+        }
       }
 
       return this;
@@ -264,7 +273,9 @@ function () {
         lineHeight: -1,
         rotate: 0,
         fontScale: 0.5,
-        color: '#eeeeee'
+        color: '#eeeeee',
+        auto: true,
+        observe: true
       }, options);
       this.options = options;
       return this;
@@ -398,6 +409,7 @@ function () {
       }
 
       this.background = this.$el.style.background;
+      return this;
     }
     /**
      * 检测节点背景是否发生变化。
@@ -428,6 +440,7 @@ function () {
         attributeFilter: ['style']
       });
       this.observer = observer;
+      return this;
     }
     /**
      * clear watermark
