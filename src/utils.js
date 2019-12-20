@@ -3,7 +3,7 @@
  * check if is HTML element dom node
  * @return {Boolean}
  */
-const isNode = el => ((typeof HTMLElement === 'function')
+const isNode = (el) => ((typeof HTMLElement === 'function')
   ? (el instanceof HTMLElement)
   : (el && (typeof el === 'object') && (el.nodeType === 1) && (typeof el.nodeName === 'string')));
 
@@ -12,14 +12,14 @@ const isNode = el => ((typeof HTMLElement === 'function')
  * @param {*} el
  * @return {Boolean}
  */
-const isString = el => typeof el === 'string';
+const isString = (el) => typeof el === 'string';
 
 /**
  * check if is null
  * @param {*} object
  * @return {Boolean}
  */
-const isNull = object => object === null;
+const isNull = (object) => object === null;
 
 /**
  * get string length by font scale

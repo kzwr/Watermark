@@ -66,7 +66,7 @@ class Watermark {
    */
   set(options = {}) {
     // eslint-disable-next-line no-param-reassign
-    options = Object.assign({
+    options = {
       textArray: ['example'],
       fontSize: 26,
       fontFamily: 'serif',
@@ -77,7 +77,8 @@ class Watermark {
       color: '#eeeeee',
       auto: true,
       observe: true,
-    }, options);
+      ...options,
+    };
     this.options = options;
     return this;
   }
