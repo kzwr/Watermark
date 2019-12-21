@@ -1,3 +1,10 @@
+# Watermark
+
+![GitHub Workflow Status](https://img.shields.io/github/workflow/status/YanxinTang/watermark/build)
+![Codecov](https://img.shields.io/codecov/c/github/YanxinTang/watermark)
+![npm](https://img.shields.io/npm/v/@tyx1703/watermark)
+![NPM](https://img.shields.io/npm/l/@tyx1703/watermark)
+
 # Introduction
 
 Watermark is a simple and quick library to draw watermark on HTML element.
